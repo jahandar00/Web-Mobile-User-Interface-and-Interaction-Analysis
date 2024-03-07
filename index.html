@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Seminar Web Engineering WS23/24 - Web/Mobile User Interface and
+      Interaction Analysis
+    </title>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Serif+Pro:400,600,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Inconsolata:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  </head>
+  <body>
+    <header>
+      <h2>Seminar Web Engineering WS23/24</h2>
+      <h1>Web/Mobile User Interface and Interaction Analysis</h1>
+      <h2 class="author">Chi-Hsuan Lee (Matrikel-Nr.: 757614)</h2>
+      <h2 class="author">Jahandar Hakhiyev (Matrikel-Nr.: 768924)</h2>
+      <h3 class="affiliation">
+        Professur Verteilte und Selbstorganisierende Rechnersysteme<br />
+        Technische Universität Chemnitz<br />
+        Chemnitz, Deutschland
+      </h3>
+    </header>
+    <section>
+      <h2>1. Introduction</h2>
+      <p>
+        Effective techniques for assessing and enhancing graphical interfaces
+        are becoming more necessary in the rapidly-changing field of user
+        interface (UI) and user experience (UX) design, as there is a growing
+        need for creative and user-focused applications. The complexity of
+        graphical user interfaces (GUIs) is increasing along with technology,
+        necessitating sophisticated approaches for their study. The use of deep
+        learning algorithms for automatic GUI analysis is one in this research.
+      </p>
+      <p>
+        Graphical User Interfaces (GUIs) act as a bridge between users and
+        digital systems, involving various elements such as buttons, images, and
+        interactive components. Traditionally, the evaluation of GUIs involved
+        manual inspection and usability testing. However, the introduction of
+        deep learning has provided significant opportunities to automate this
+        analysis, allowing for a more comprehensive understanding of UI
+        components and user interactions.
+      </p>
+
+      <p>
+        The first half of this report will present some of the existing
+        approaches and available datasets. The second half of this report will
+        focus into the field of autonomous graphical user interface analysis,
+        emphasizing the crucial roles of deep learning and non-deep learning
+        techniques. Deep learning represents a paradigm shift in how developers
+        and designers can approach the assessment and optimization of graphical
+        interfaces, from gesture and speech interfaces to picture and object
+        identification. We aim to discover the details of how deep learning
+        enhances UI and UX design, ultimately producing smoother user
+        experiences, by delving into certain methodologies and applications.
+      </p>
+    </section>
+    <section>
+      <h2>2. Existing Approaches</h2>
+      <p>
+        In the realm of automatic analysis and evaluation of web and mobile user
+        interfaces and interactions, various methods exist, each distinguished
+        by its input data and purpose. In this section, we will introduce two
+        categories and give an example of each.
+      </p>
+      <h3>2.1. Textual/Source Code</h3>
+
+      <p>
+        This categorization relies on the source code of web and mobile
+        applications as its input data. Through a thorough examination of this
+        source code, researchers can acquire valuable insights and conduct
+        studies of the user interfaces and interactions within the graphical
+        user interface (GUI).
+      </p>
+      <p>
+        An example of this was done by Shirazi et al. <a href="#r1">[1]</a> This
+        work aims to understand and analyze mobile user interfaces at scale by
+        automatically disassembling and examining the 400 popular Android
+        applications, revealing insights into interface complexity, common
+        elements, and patterns that can be used for future work.
+      </p>
+      <p>
+        Another example was done by Avdiienko et al. <a href="#r2">[2]</a> This
+        work explores whether users consistently experience what they expect
+        when interacting with user interfaces in thousands of Android apps. By
+        analyzing the Android APIs and on-screen text associated with each UI
+        element, the researchers identified outliers—elements that suggest one
+        action but are tied to different actions.
+      </p>
+      <p>
+        Next, we will delve into the research methods and evaluation techniques
+        called “BACKSTAGE” developed by Avdiienko et al.
+      </p>
+      <h4>2.1.1 Research Methodology</h4>
+      <p>Their approach consists of five steps:</p>
+      <ol>
+        <li>
+          App Collection: They created a large dataset that includes the top 600
+          Android apps in each category of the Google Play Store, as displayed
+          in the US in July 2016. A total of 12,000 apps have been collected.
+        </li>
+        <li>
+          They analyze applications through three primary steps: 1) identifying
+          UI elements and extracting their text labels; 2) gathering relevant
+          text surrounding each UI element to enhance semantic understanding
+          within the context; and 3) determining the behavior associated with
+          each UI element.
+        </li>
+        <li>
+          They extract relevant text for each UI element, encompassing labels,
+          context from the surrounding screen, and APIs triggered by the
+          element. This contextual information is important, especially for
+          generic labels like "OK" or "Yes," which may lack clear context on
+          their own. To address this, they gather surrounding text for each UI
+          element, treating it as relevant context to interpret the label's
+          semantics. This involves capturing all the text displayed by the
+          activity containing the element.
+        </li>
+        <li>
+          Cluster Analysis: They cluster verbs and nouns from UI elements'
+          associated text into 250 concepts, by measuring the semantic distance
+          between each UI element's text and these concepts. For example, the
+          “login” concept has words such as "username," "create," "account,"
+          "email,” and “register” because these words are semantically related.
+        </li>
+        <li>
+          Outlier Detection: For each concept, they use outlier detection to
+          identify those UI elements that invoke uncommon APIs, indicating
+          differing behavior. For instance, while most "login" buttons trigger
+          internet activation, a login button triggering a location API would be
+          marked as abnormal.
+        </li>
+      </ol>
+      <p>
+        This system automatically warns developers about mismatches between UI
+        element labels and functionality. Developers can then rectify the issue
+        by adjusting either the GUI label or the functionality.
+      </p>
+      <h4>2.1.2 Evaluation</h4>
+      <p>
+        They modify existing buttons by changing their labels, making them no
+        longer correspond to the associated APIs. Subsequently, they evaluate
+        whether the system identifies these mutations as anomalies.
+      </p>
+      <p>
+        There are two types of mutations: label replace and crossover. Label
+        replace can be further subdivided into two types: random and high
+        distance.
+      </p>
+      <ul>
+        <li>
+          “Random” label replace means the original label is replaced by a random
+          label encountered across all apps.
+        </li>
+        <li>
+          “High distance” label replace means the original label is replaced
+          with a high semantically distant label.
+        </li>
+        <li>
+          “Crossover” label replace means they swap two labels within the same
+          app.
+        </li>
+      </ul>
+      <p>
+        To evaluate the system, they used the evaluation of binary classifiers.
+        After five iterations of the evaluation process, they take the mean of the
+        value. The precision (how many of the reported anomalies would be
+        mutants?) and recall (how many of the mutants would be reported as
+        anomalies?) are as follows:
+      </p>
+      <figure>
+        <img
+          src="backstage.png"
+          alt="Figure 1: Accuracy for Lable Replace Mutations."
+        />
+
+        <figcaption>
+          Figure 1: Accuracy for Lable Replace Mutations.<a href="#r2">[2]</a>
+        </figcaption>
+      </figure>
+
+      <p>
+        Figure 1 shows that BACKSTAGE stands out at identifying mutations with a
+        high semantic distance between the given and correct labels, but fails
+        when the semantic distance is low. Errors missed by BACKSTAGE often
+        involve labels that are semantically close and share similar APIs, such
+        as "Search with Google" and "Search with Bing," presenting challenges
+        similar to those encountered by humans in discerning semantically
+        equivalent labels like "Stop," "Abort," and "Cancel."
+      </p>
+    </section>
+    <section>
+      <h3>2.2. Visual/Screenshots/Sketches</h3>
+      <p>
+        This category relies on visual perception from web or mobile apps as the
+        input source.
+      </p>
+      <p>
+        An example is ZIPT (Zero-Integration Performance Testing) done by Deka et
+        al. <a href="#r3">[3]</a> The goal of this work is to enable designers
+        to conduct comparative testing at scale, collecting detailed design and
+        interaction data of Android apps to assess performance metrics and
+        identify usability issues in existing apps.
+      </p>
+      <p>
+        We will continue to look at how ZIPT is used and how it is evaluated.
+      </p>
+      <h4>2.2.1 Research Methodology</h4>
+      <p>
+        To ensure uniformity among crowd workers using apps without requiring
+        any software installation on their devices, ZIPT utilizes a web-based
+        streaming method to gather data from mobile apps. The apps operate in a
+        regulated environment on a mobile device farm and are streamed to client
+        devices through the browser, at the same time ZIPT will record
+        screenshots, hierarchies, and interactions generated during usage.
+      </p>
+      <p>ZIPT system consists of three steps:</p>
+      <ol>
+        <li>
+          Test Creation: ZIPT lets app designers create usability tests for
+          Android apps by uploading APK files, setting the number of traces, and
+          describing tasks for crowd workers, ranging from open-ended tasks like
+          "browse for music" to specific ones like "create a playlist with three
+          songs."
+        </li>
+        <li>
+          Data Collection: Crowd workers run the task through the web browser,
+          and the ZIPT can record interaction paths. ZIPT requires each crowd
+          worker to report whether they successfully completed the specified
+          task. It also allows designers to add other pre- and post-task
+          questions.
+        </li>
+        <li>
+          Visualizations and Metrics: ZIPT automatically captures user
+          interactions, computes aggregate metrics, and generates visualizations
+          after collecting sufficient user traces.
+        </li>
+      </ol>
+      <p>The result of ZIPT comprises four types of data:</p>
+      <ul>
+        <li>
+          Individual Traces. ZIPT enables designers to look into the interaction
+          path of each crowd worker as they navigate through the app.
+        </li>
+        <li>
+          ZIPT computes and presents three performance metrics: completion
+          rate (How many of all crowd workers completed the task), time on
+          task (How much time do they need to complete the task), and number of
+          interactions performed.
+        </li>
+        <li>
+          Qualitative Feedback. The result dashboard gathers answers from pre-
+          and post-task questions, showing them in bar charts for easy
+          understanding. Designers can pick segments to check related traces,
+          helping them quickly spot and investigate issues like high reported
+          task difficulty.
+        </li>
+        <li>
+          ZIPT displays interactive flow visuals for designers to compare user
+          paths. Sequential nodes, color-coded for screens, show task
+          progression. Band thickness indicates user frequency on each path.
+          These visuals offer quick insights into aggregate data and enable the
+          identification of usability issues on individual screens.
+        </li>
+      </ul>
+    </section>
+    <section>
+      <h4>2.2.2. Contribution</h4>
+      <p>
+        ZIPT make contribution in these two issue: “Identifying Usability
+        Issues” and “Analyzing Comparative Performance”
+      </p>
+      <p>
+        ZIPT shows that when designers blend aggregate flow and individual path
+        visuals, they can quickly find potential usability issues in apps.
+        Researchers spot problems by studying both usual and unusual user paths.
+      </p>
+      <p>
+        “For example, if many users drop off at a common node in the flow
+        visualization, this may signify a usability problem in the critical path
+        of the task. On the other hand, if most users successful follow the
+        golden path but a small number are unable to complete the task, this may
+        indicate a usability issue in a part of the app that users are not able
+        to easily recover from. <a href="#r3">[3]</a> ”
+      </p>
+      <p>
+        ZIPT also lets designers compare things on a large scale. In the early
+        stage, they can use existing designs to see how different ideas perform.
+        After creating something, ZIPT helps designers measure their work
+        against competitor apps.
+      </p>
+      <p>
+        “... researchers can inspect flow visualizations and individual traces
+        to better understand why these performance differences exist, uncovering
+        usability issues, user expectations, and general trends in user
+        behavior. <a href="#r3">[3]</a>”
+      </p>
+    </section>
+    <section>
+      <h4>2.2.3. Evolution</h4>
+      <p>
+        The research team recruited four Google employees to conduct interviews.
+      </p>
+      <p>
+        Each interview included a 30-minute system overview, a 10-minute system
+        walkthrough, and a 20-minute discussion. In the overview, they presented
+        the system goals and demonstrated features using case study examples.
+        The walkthrough allowed participants to explore MyNetDiary calorie
+        counter app data. They then discussed how participants could integrate
+        the ZIPT system and data into their workflow.
+      </p>
+      <p>
+        After the interview, participants received an 11-question survey on the
+        system's overall usefulness and data presentation. Responses were given
+        on a 7-point Likert scale, ranging from strongly disagree (1) to
+        strongly agree (7). Feedback from participants was generally positive,
+        with the average score for each question above 5 points.
+      </p>
+    </section>
+    <section>
+      <h2>3. Available Databases</h2>
+      <p>
+        There are many databases related to web/mobile applications, each with
+        its own purposes or objectives. Here, we will introduce some databases
+        for mobile apps that can be used for research on user
+        interface and interaction analysis.
+      </p>
+      <h3>3.1. AndroZoo</h3>
+      <p>
+        AndroZoo <a href="#r4">[4]</a> is a dataset of Android applications,
+        providing researchers with a valuable resource for analyzing and
+        understanding Android apps. It currently contains twenty-four million of
+        APKs, each of which has been analyzed by multiple antivirus products to
+        determine its malware status. The top five sources of AndroZoo are
+        Google Play, PlayDrone, Appchina, Anzhi and VirusShare. AndroZoo offers
+        API access and downloadable datasets, allowing researchers to easily
+        access and work with the data.
+      </p>
+      <h3>3.2. Rico</h3>
+      <p>
+        Rico <a href="#r5">[5]</a> is a repository of mobile app designs,
+        supporting five classes of data-driven applications: design search, UI
+        layout generation, UI code generation, user interaction modeling, and
+        user perception prediction. Mined from over 9 thousand Android apps
+        through crowdsourcing and automation, Rico's dataset includes design
+        properties from 72 thousand unique UI screens across 27 categories.
+      </p>
+    </section>
+    <section>
+      <h2>4. Non-deep Learning Models</h2>
+      <p>
+        Traditional object detection models use handcrafted features and
+        traditional computer vision techniques to detect and recognize objects
+        within images. These models lack the depth and complexity of their deep
+        learning counterparts, but they are still useful in scenarios where
+        readability and simplicity are essential or computational resources are
+        limited.
+      </p>
+      <p>
+        To recognize and connect objects in a graphical user interface (GUI),
+        non-deep learning models employ a method centered on detecting simpler
+        edges and regions. For basic GUI elements like buttons and checkboxes,
+        this technique works well. But it can struggle when faced with complex
+        or unusual designs. The model fails in scenarios where GUI elements are
+        not the same, demonstrating the difficulty of adapting to a broad range
+        of complex visual representations.
+      </p>
+      <p>
+        Alibaba has developed a tool called Xianyu <a href="#r6">[7]</a> that is
+        used to generate code from GUI pictures. It is used for element
+        identification applications and was used in one study
+        <a href="#r6">[7]</a> to compare models for perceiving objects in GUIs.
+        The process divides the image into horizontal and vertical slices in
+        addition to image binarization, which isolates GUI elements.
+        Additionally, a flood fill technique is used to identify linked areas
+        and remove noise from complex backdrops. This element detection-based
+        procedure highlights Xianyu's ability to extract data from GUI graphics
+        for use in code development later on.
+      </p>
+      <p>
+        The two major purposes of Tesseract <a href="#r6">[7]</a>, an optical
+        character recognition (OCR) tool that is mostly used for document text,
+        are text line detection and text recognition. Tesseract is another
+        detection technique that is often used in studies and research <a href="#r9">[9]</a>. This
+        model follows a standard technique and begins by converting the image to
+        a binary map. After that, it evaluates related components to figure out
+        element outlines. These outlines are then further reduced by being
+        bundled into blobs. Ultimately, the program merges text lines with a
+        minimum of over 50% horizontal overlap.
+      </p>
+    </section>
+    <section>
+      <h2>5. Deep Learning Models</h2>
+      <p>
+        In contrast, deep learning models have achieved advancements in object
+        recognition and labeling within graphical user interfaces (GUIs). This
+        method works more effectively than the sequential steps utilized in
+        earlier approaches.
+      </p>
+      <p>
+        Convolutional Neural Networks (CNN) in particular are used by deep
+        learning models to automatically collect and extract features from data.
+        These models demonstrate performance in terms of accuracy and
+        efficiency. They are highly renowned for their ability to capture
+        complex patterns.
+      </p>
+      <p>
+        To learn and adopt patterns associated with different object classes,
+        the model needs many images during the training phase of deep learning
+        for detection. The model is shown in a range of images in the training
+        phase, each with bounding boxes around objects and corresponding class
+        labels.
+      </p>
+    </section>
+    <section>
+      <h3>5.1 Limitations</h3>
+      <p>
+        Deep learning models have several advantages, but they are not without
+        limitations. Accurate detection can be challenging for certain models
+        <a href="#r6">[6]</a> in situations when small objects, such as flocks
+        of birds in a graphical user interface (GUI), are tightly grouped
+        together. Due to its reliance on pre-existing data for learning, the
+        model may have issues with unique or unusual arrangements of small
+        objects. In order to develop solutions that address particular issues
+        inherent in deep learning applied to GUI analysis, it becomes essential
+        to acknowledge these limits.
+      </p>
+      <p>
+        Another deep learning model is called Faster R-CNN, which is a two-stage
+        deep learning method based on anchor boxes. To create a set of area
+        proposals that are likely to contain items, it first uses a Region
+        Proposal Network (RPN), also known as a Region of Interest (RoI). Every
+        point in the feature map is an anchor, and RPN determines these anchors
+        by using a fixed number of user-defined boxes with various dimensions
+        and aspect ratios—known as anchor boxes. Regression is used to align
+        each anchor box with the actual bounding box of the enclosed item after
+        RPN computes an objectness score for each anchor box, determining
+        whether or not it includes an object. A Convolutional Neural Network
+        (CNN)-based image classifier is used in the second stage to identify the
+        object class inside the designated regions of interest.
+      </p>
+    </section>
+    <section>
+      <h2>6. Comprehensive UI Analysis Architecture</h2>
+      <p>
+        In <a href="#r9">[9]</a>, research suggests using a visual analyzer called WUI to predict
+        users' perceptions. It is essential to understand the complex structures
+        and elements that make up user interfaces (UIs) in order to improve the
+        user experience and enable automation in software applications. A
+        thorough UI analysis architecture has been presented in an attempt to do
+        this, and there are two necessary parts: the Analyzer Frontend and the
+        Visual Analysis Backend.
+      </p>
+      <p>
+        Through an HTTP Interface, the Visual Analysis Backend—which is
+        developed as a Web Service—and the Analyzer Frontend—which is displayed
+        as a Web Application—cooperate with each other. There are various steps
+        in the analytical process. To increase detection rates, screenshots are
+        first preprocessed by upscaling them to grayscale and then converting
+        them to binary matrices. OpenCV's edge detection feature is used to
+        identify rectangular areas by recognizing both horizontal and vertical
+        lines. Tesseract and close-edge detection are combined in Optical
+        Character Recognition (OCR) to identify text in the user interface.
+      </p>
+      <p>
+        The results of the DOM analysis and visual analysis are combined by the
+        analyzer frontend, which then computes various UI metrics. The three
+        metrics for visual complexity were included in the first group; the
+        number of every recognized UI element, the total number of distinct
+        element types that the analyzer detected and the rate of compression.
+      </p>
+      <p>
+        The relative shares of the UI areas covered by the various UI element
+        types were characterized by the three metrics of the second group;
+        textual content, graphic and mixed content, and whitespaces.
+      </p>
+      <p>
+        I appreciate this approach; it outlines a method for analyzing and mining the structure and design of web user interfaces (WUIs) through visual representation. The tool's abilities and capability to auto-calculate measures provide a detailed understanding. This approach represents an important advancement in the field of web interface analysis by offering a more user-focused, visual perspective.
+      </p>
+    </section>
+    <section>
+      <h2>7. UI Design Patterns</h2>
+      <p>
+        Users usually interact with mobile and web apps using the user interface
+        (e.g., click on an image or scroll across a page). Therefore, the user
+        interface (UI) has an impact on how users view and engage with an
+        application, which may determine the app's success or failure.
+      </p>
+    </section>
+    <section>
+      <h3>7.1 Research Methodology</h3>
+      <p>
+        One research study <a href="#r8">[8]</a> offers a solution for the situation in which a
+        developer must design a login page for a new mobile application. They
+        want the app's branding to be included, other login options and users to
+        input their email address and password. The developer wishes to keep to
+        a popular UI design pattern found in already-released apps rather than
+        creating something from scratch.
+      </p>
+      <p>
+        The developer describes the intended login screen in simple terms in
+        English. They search through DeepUI's collection of millions of UI
+        design schemes and samples using this description as a query. After
+        that, DeepUI compares and presents design samples with the developer's
+        description.
+      </p>
+      <p>
+        The search results can be further filtered and ordered by the developer
+        according to parameters like categories or app ratings. DeepUI downloads
+        applications from app stores and employs automated procedures to capture
+        their user interfaces (UI screens) in order to gather millions of UI
+        design samples.
+      </p>
+      <p>
+        The provided research study also describes a case study that examined UI
+        design patterns seen in shopping apps' home screens. After gathering the
+        home screens of thirty well-known shopping apps, they discovered common
+        UI design patterns. One pattern is best represented by apps such as
+        Amazon, Walmart, and Ebay. It usually consists of a shopping cart, a
+        logo or title, and a menu bar with buttons to open the menu. The search
+        bar has three features: an image search button, a voice or image search
+        button, and a text box for user inquiries. There are buttons in the
+        navigation bar that correspond to various app functionalities. The many
+        ways that apps provide information are reflected in the different ways
+        that their content layouts differ.
+      </p>
+      <p>
+        The comparison of search result screens between shopping applications is
+        covered in the case study's last section. There are two patterns found.
+        One has a vertical list of result entries below a navigation and/or
+        search bar at the top. A menu button, a text label, and a shopping cart
+        button are all part of the navigation. A text indicator indicating the
+        quantity of results appears on every screen, along with buttons for
+        sorting and filtering result entries. Each result item has a consistent
+        layout with an image on the left and comprehensive details such as the
+        title, manufacturer, condition, price, and shipping on the right.
+      </p>
+      <p>
+        This approach simplifies the process of finding and analyzing UI designs
+        for web and mobile applications, making it more accessible for
+        developers and designers.
+      </p>
+    </section>
+    <section>
+      <h2>8. Demonstration</h2>
+      <p>
+        During our presentation, we highlighted a real-world application
+        developed on the Aalto Interface Metrics (AIM) study <a href="#r10">[10]</a>, providing an
+        online tool for assessing GUI designs. AIM is an online platform that
+        combines data and models of user perception that have been proven. In
+        our example, visitors entered a GUI design through a URL and chose from
+        26 criteria that ranged from visual clutter to visual learnability.
+      </p>
+      <p>
+        AIM gives non-professionals and designers a full range of tools to
+        evaluate and improve GUI interfaces. Users are able to identify
+        potential weaknesses and opportunities for design improvement by using
+        the service's comprehensive breakdowns, visualizations, and statistical
+        comparisons. AIM functions as an open-source computational evaluation
+        archive, combining previously released metrics and models that have
+        proven to be predictive in comprehending how consumers perceive and
+        engage with designs.
+      </p>
+      <p>
+        Through this endeavor, research on models and metrics in the field of
+        computational approaches for design practices is brought together. AIM
+        makes it easier to include new metrics by providing an open-source
+        platform with a well-documented Python API. That is why the number of
+        criteria has increased since the paper was released. In the assessment
+        of interface and interaction designs, our presentation highlighted the
+        usefulness of AIM in bridging the gap between firsthand knowledge and
+        computer modelling.
+      </p>
+      <figure>
+        <img src="aim.png" alt="Figure 2: Aalto Interface Metrics (AIM)" />
+        <figcaption>
+          Figure 2: Result page from the website
+      </figure>
+    </section>
+    <section>
+      <h2>9. Conclusion</h2>
+      <p>
+        In conclusion, this paper examines the field of graphical user interface
+        (GUI) analysis as it is developing. It highlights current methodologies,
+        including textual/source code and visual/screenshots/sketches, and
+        presents studies like ZIPT and BACKSTAGE. AndroZoo and Rico datasets are
+        highlighted in the paper as important resources for mobile app analysis.
+        Incorporating deep learning into UI analysis, architecture, and design
+        patterns highlights how modern technology may revolutionize user
+        experience optimization. Future GUI assessments will be shaped by novel
+        datasets and approaches as technology advances, leading to more
+        user-friendly apps.
+      </p>
+    </section>
+    <section class="references">
+      <h2>10. References</h2>
+      <p class="reference" id="r1">
+        [1] A. Sahami Shirazi, N. Henze, A. Schmidt, R. Goldberg, B. Schmidt,
+        and H. Schmauder, “Insights into layout patterns of mobile user
+        interfaces by an automatic analysis of android apps,” Proceedings of the
+        5th ACM SIGCHI symposium on Engineering interactive computing systems -
+        EICS ’13, 2013, doi: 10.1145/2494603.2480308
+      </p>
+      <p class="reference" id="r2">
+        [2] V. Avdiienko, K. Kuznetsov, I. Rommelfanger, A. Rau, A. Gorla and A.
+        Zeller, "Detecting Behavior Anomalies in Graphical User Interfaces,"
+        2017 IEEE/ACM 39th International Conference on Software Engineering
+        Companion (ICSE-C), Buenos Aires, Argentina, 2017, pp. 201-203, doi:
+        10.1109/ICSE-C.2017.130.
+      </p>
+      <p class="reference" id="r3">
+        [3] B. Deka, Z. Huang, C. Franzen, J. Nichols, Y. Li, and R. Kumar,
+        “ZIPT: Zero-Integration Performance Testing of Mobile App Designs,”
+        Proceedings of the 30th Annual ACM Symposium on User Interface Software
+        and Technology, Oct. 2017, doi: 10.1145/3126594.3126647
+      </p>
+      <p class="reference" id="r4">
+        [4] K. Allix, T. F. Bissyandé, J. Klein, and Y. Le Traon. "AndroZoo:
+        Collecting Millions of Android Apps for the Research Community. Mining
+        Software Repositories," Proceedings of the 13th International Conference
+        on Mining Software Repositories (MSR '16), Association for Computing
+        Machinery, New York, NY, USA, 468–471, doi: 10.1145/2901739.2903508
+      </p>
+      <p class="reference" id="r5">
+        [5] B. Deka, Z. Huang, C. Franzen, J. Hibschman, D.
+        Afergan, Y. Li, J. Nichols and R. Kumar, "Rico: A Mobile
+        App Dataset for Building Data-Driven Design Applications," In
+        Proceedings of the 30th Annual Symposium on User Interface Software and
+        Technology (UIST '17), Association for Computing Machinery, New York,
+        NY, USA, 845–854, doi: 10.1145/3126594.3126651
+      </p>
+      <p class="reference" id="r6">
+        [6] J. Redmon, S. Divvala, R. Girshick and A. Farhadi, "You Only Look
+        Once: Unified, Real-Time Object Detection," 2016 IEEE Conference on
+        Computer Vision and Pattern Recognition (CVPR), Las Vegas, NV, USA,
+        2016, pp. 779-788, doi: 10.1109/CVPR.2016.91
+      </p>
+      <p class="reference" id="r7">
+        [7] J. Chen et al., “Object detection for graphical user interface: old
+        fashioned or deep learning or a combination?,” Proceedings of the 28th
+        ACM Joint Meeting on European Software Engineering Conference and
+        Symposium on the Foundations of Software Engineering, Nov. 2020, doi:
+        10.1145/3368089.3409691
+      </p>
+      <p class="reference" id="r8">
+        [8] T. T. Nguyen, P. M. Vu, H. V. Pham, and T. T. Nguyen, “Deep learning
+        UI design patterns of mobile apps,” Proceedings of the 40th
+        International Conference on Software Engineering New Ideas and Emerging
+        Results - ICSE-NIER ’18, 2018, doi: 10.1145/3183399.3183422
+      </p>
+      <p class="reference" id="r9">
+        [9] M. Bakaev, S. Heil, V. Khvorostov, and M. Gaedke, “HCI
+        Vision for Automated Analysis and Mining of Web User Interfaces”.
+        Springer International Publishing AG, part of Springer Nature 2018. T.
+        Mikkonen et al. (Eds.): ICWE 2018, LNCS 10845, pp. 136–144, 2018, doi:
+        10.1007/978-3-319-91662-0_10
+      </p>
+      <p class="reference" id="r10">
+        [10] A. Oulasvirta, S. D. Pascale, J. Koch, T. Langerak, J. Jokinen, K. Todi, M. Laine, M. Kristhombuge, Y. Zhu, A. Miniukovich, G. Palmas, T. Weinkauf, “Aalto Interface
+        Metrics(AIM): A Service and Codebase for Computational GUI Evaluation”,
+        “UIST’ 18 Adjunct October 14–17, 2018, Berlin, Germany”,
+        doi:10.1145/3266037.3266087
+      </p>
+    </section>
+  </body>
+</html>
